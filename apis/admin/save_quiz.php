@@ -1,0 +1,62 @@
+<?php
+    require '../../inc/connect_db.php';
+    
+    $quiz_id    = $_POST['quiz-id'];
+    $quiz_code  = $_POST['quiz-code'];
+    $quiz_type  = $_POST['quiz-type'];
+    
+    if ($quiz_type == "untimed") {
+        $limit_time = 0;
+    } else {
+        $limit_time = $_POST['limit-time'];
+    }
+
+    $data = array(
+                    'quiz_id'       => $quiz_id,
+                    'quiz_code'     => $quiz_code,
+                    'quiz_type'     => $quiz_type,
+                    'limit_time'    => $limit_time
+                );
+
+    if ($quiz_id == 0) {
+        //in case save new quiz
+        if (existQuiz($quiz_id, $quiz_code)) {
+            echo json_encode(
+                array(
+                    "status"    => false,
+                    "msg"       => "Quiz with this code exists already!"
+                )
+            );
+            exit;
+        } else {
+            saveQuiz($data);
+            echo json_encode(
+                array(
+                    "status"    => true,
+                    "msg"       => "Quiz was saved successfully!"
+                )
+            );
+            exit;
+        }
+    } else {
+        //in case update quiz
+        if (existQuiz($quiz_id, $quiz_code)) {
+            echo json_encode(
+                array(
+                    "status"    => false,
+                    "msg"       => "Quiz with this code-[$quiz_code] exists already!"
+                )
+            );
+            exit;
+        } else {
+            updateQuiz($data);
+            echo json_encode(
+                array(
+                    "status"    => true,
+                    "msg"       => "Quiz was updated successfully!"
+                )
+            );
+            exit;
+        }
+    }
+?>
