@@ -91,21 +91,18 @@
 
     $percentage     = round($score / $total_score * 100);
         
-    if ($percentage >= 80) {
-        $badge_text  = "Strong Score, Well done!";
-        $badge_class = "alert-success";
-        $chart_color = "#46c37b";
-        $chart_class = "text-success";
-    } else if ($percentage > 70 && $percentage < 80) {
-        $badge_text  = "Reasonable Score";
-        $badge_class = "alert-info";
-        $chart_color = "#70b9eb";
-        $chart_class = "text-info";
+    //get evaluation
+    $evaluation = getEvalFromValue($percentage);
+    if (isset($evaluation['id'])) {
+        $badge_text     = nl2br($evaluation['feedback_text']);
+        $badge_class    = $evaluation['feedback_class'];
+        $chart_color    = $evaluation['chart_color'];
+        $chart_class    = $evaluation['chart_class'];
     } else {
-        $badge_text  = "Your score needs to be improved.";
-        $badge_class = "alert-danger";
-        $chart_color = "#d26a5c";
-        $chart_class = "text-danger";
+        $badge_text     = "Unknown Evalution";
+        $badge_class    = "alert-danger";
+        $chart_color    = "#d26a5c";
+        $chart_class    = "text-danger";
     }
     
     $quiz = getQuiz($_SESSION['quiz_id']);
