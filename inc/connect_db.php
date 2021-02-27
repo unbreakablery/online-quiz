@@ -342,6 +342,24 @@
 		}
 		return $questions;
 	}
+	function getExamQueFlagged($exam_id) {
+		global $connect;
+		$exam = getExam($exam_id);
+		$questions = explode("|", $exam['f_que_ids']);
+		return $questions;
+	}
+	function saveExamQueFlagged($exam_id, $f_que_ids) {
+		global $connect;
+		$query = "
+					UPDATE `exams`
+					SET
+						`f_que_ids` = '$f_que_ids'
+					WHERE
+						`id` = $exam_id
+			";
+		$result = mysqli_query($connect, $query);
+		return $result;
+	}
 	function getExamDetailQuestions($exam_id) {
 		global $connect;
 

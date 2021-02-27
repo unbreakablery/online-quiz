@@ -140,6 +140,8 @@
         $_SESSION['exam_id']        = $exam_id;
     }
     $questions = getExamQuestions($exam_id);
+    $f_que_ids = getExamQueFlagged($exam_id);
+    $flag = in_array($cur_que_id, $f_que_ids) ? '<i class="fa fa-flag"></i>' : '<i class="fa fa-flag-o"></i>';
 ?>
 
 <!-- Page Content -->
@@ -159,10 +161,11 @@
                                     <li>
                                         <a href="#">
                                             <div class="row">
+                                            <div class="col-md-1 col-xs-1 text-center"></div>
                                                 <div class="col-md-1 col-xs-1 text-right">
                                                     #
                                                 </div>
-                                                <div class="col-md-10 col-xs-10">
+                                                <div class="col-md-9 col-xs-9">
                                                     Question
                                                 </div>
                                                 <div class="col-md-1 hidden-xs text-right">
@@ -173,13 +176,18 @@
                                     </li>
                                     <li class="divider"></li>
                                     <?php foreach ($questions as $idx => $q) { ?>
-                                        <li>
-                                            <a href="#" class="question" data-idx="<?php echo $idx; ?>">
+                                        <li class="<?php if (in_array($q['id'], $f_que_ids)) { echo "alert-warning"; } ?>">
+                                            <a href="#" class="question" data-idx="<?php echo $idx; ?>" data-id="<?php echo $q['id']; ?>">
                                                 <div class="row">
+                                                    <div class="col-md-1 col-xs-1 text-center flag-field">
+                                                        <?php if (in_array($q['id'], $f_que_ids)) { ?>
+                                                            <i class="fa fa-flag"></i>
+                                                        <?php } ?>
+                                                    </div>
                                                     <div class="col-md-1 col-xs-1 text-right">
                                                         <?php echo ($idx + 1) . ". "; ?>
                                                     </div>
-                                                    <div class="col-md-10 col-xs-10">
+                                                    <div class="col-md-9 col-xs-9">
                                                         <?php echo substr(nl2br($q['que_text']), 0, 100) . "..."; ?>
                                                     </div>
                                                     <div class="col-md-1 hidden-xs text-right">
@@ -192,7 +200,12 @@
                                     <?php } ?>
                                 </ul>
                             </li>
-                            <li class="dropdown full-width  pull-right">
+                            <li class="dropdown full-width">
+                                <a href="#" class="navbar-brand text-right set-flag">
+                                    <span class=""><?php echo $flag; ?></span>
+                                </a>
+                            </li>
+                            <li class="dropdown full-width pull-right">
                                 <a href="#" class="navbar-brand text-right">
                                     <span class=""><i class="fa fa-clock-o"></i> </span> 
                                     <span class="time text-warning"></span>
@@ -602,6 +615,29 @@
                         dragAndDrop(".card", ".answer");
                         dragAndDrop(".card", ".option");
                     }
+
+                    $.ajax({
+                        url: "/apis/student/check_flag.php",
+                        dataType: "json",
+                        type: "post",
+                        data: {
+                                exam_id: exam_id,
+                                que_id:  $("input#que-id").val()
+                            },
+                        success: function( res ) {
+                            if (!res.status) {
+                                return;
+                            } else {
+                                if (res.flag == 1) {
+                                    $(".set-flag span i").removeClass("fa-flag-o");
+                                    $(".set-flag span i").addClass("fa-flag");
+                                } else {
+                                    $(".set-flag span i").removeClass("fa-flag");
+                                    $(".set-flag span i").addClass("fa-flag-o");
+                                }
+                            }
+                        }
+                    });
                 }
                 if (status == "error") {
                     alert("Error: " + xhr.status + ": " + xhr.statusText);
@@ -741,6 +777,12 @@
                 }
             });
 
+            if ($(this).find(".flag-field i").hasClass('fa-flag')) {
+                $(".set-flag span").html('<i class="fa fa-flag"></i>');
+            } else {
+                $(".set-flag span").html('<i class="fa fa-flag-o"></i>');
+            }
+
             let data = {
                             exam_id:        exam_id,
                             que_id:         que_id,
@@ -748,7 +790,7 @@
                             ans_list:       ans_list,
                             spent_time:     time
                         };
-            
+
             $("div#quiz-block-content").load("/apis/student/get_que.php", data, function(response, status, xhr) {
                 if (status == "success")
                     if (isMobile) {
@@ -779,6 +821,50 @@
                    
                 if (status == "error")
                     alert("Error: " + xhr.status + ": " + xhr.statusText);
+            });
+        });
+
+        $(document).on("click", ".set-flag", function() {
+            let cur_que_id = $("input#que-id").val();
+            let exam_id = $("input#exam-id").val();
+            let flag = 0;
+            if ($(this).find("span i").hasClass("fa-flag")) {
+                $(this).find("span i").removeClass("fa-flag");
+                $(this).find("span i").addClass("fa-flag-o");
+                flag = 0;
+            } else {
+                $(this).find("span i").removeClass("fa-flag-o");
+                $(this).find("span i").addClass("fa-flag");
+                flag = 1;
+            }
+
+            $.ajax({
+                url: "/apis/student/set_flag.php",
+                dataType: "json",
+                type: "post",
+                data: {
+                        exam_id:    exam_id,
+                        cur_que_id: cur_que_id,
+                        flag:       flag
+                    },
+                success: function( res ) {
+                    if (!res.status) {
+                        alert("Error! Please retry to set flag.");
+                        return;
+                    } else {
+                        $(".question").each(function(i) {
+                            if ($(this).data('id') == cur_que_id) {
+                                if (flag == 1) {
+                                    $(this).find(".flag-field").html('<i class="fa fa-flag"></i>');
+                                    $(this).closest("li").addClass("alert-warning");
+                                } else {
+                                    $(this).find(".flag-field").html('');
+                                    $(this).closest("li").removeClass("alert-warning");
+                                }
+                            }
+                        });
+                    }
+                }
             });
         });
     });
