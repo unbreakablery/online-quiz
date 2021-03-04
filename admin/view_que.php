@@ -100,7 +100,7 @@
                             <div class="col-md-7">
                                 <select class="form-control" name="quiz-id" id="quiz-id" require>
                                     <?php foreach ($quizzes as $quiz) { ?>
-                                        <option value="<?php echo $quiz['id']?>" <?php if ($quiz['id'] == $quiz_id) { ?>selected<?php } ?>><?php echo $quiz['quiz_code']; ?></option>
+                                        <option value="<?php echo $quiz['id']?>" <?php if ($quiz['id'] == $quiz_id) { ?>selected<?php } ?>><?php echo $quiz['quiz_code']; ?> (<?php echo $quiz['quiz_type']; ?>)</option>
                                     <?php } ?>
                                 </select>
                             </div>
