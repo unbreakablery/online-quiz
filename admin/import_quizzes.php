@@ -65,6 +65,7 @@
                 <div class="form-group">
                     <div class="col-md-5 col-md-offset-5">
                         <button class="btn btn-primary" type="submit"><i class="fa fa-upload"></i> Import Quizzes</button>
+                        <button class="btn btn-danger" type="button" id="remove-quizzes" data-toggle="tooltip" data-placement="bottom" data-original-title="All quizzes and questions will be removed."><i class="fa fa-trash-o"></i> Remove Quizzes</button>
                     </div>
                 </div>
             </form>
@@ -288,6 +289,10 @@
 					}
 				}
 			});
+        });
+
+        $("#remove-quizzes").click(function() {
+            window.location.href = "remove_all.php";
         });
     });
 </script>
