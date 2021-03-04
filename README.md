@@ -1,6 +1,7 @@
 # Online Quiz Exam Web App
 
 This project is for online exam with quizzes by using PHP/MySQL, HTML, CSS, Bootstrap, Responsive, JQuery and plugins, and Drag & Drop.
+
 - Quiz Type: timed and untimed
 - Quiz Kind: Ranking, Selection, Minimock(Ranking and Selection), Mock(Ranking and Selection)
 - Question Type: SEQ(Ranking), MR(Selection)
