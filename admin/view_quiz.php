@@ -66,6 +66,7 @@
                 <div class="block-content block-content-narrow">
                     <form class="form-horizontal" name="quiz-form" id="quiz-form" action="save_quiz.php" method="post" autocomplete="off">
                         <input type="hidden" name="quiz-id" value="<?php echo $quiz_id; ?>" />
+                        <input type="hidden" name="old-quiz-code" value="<?php echo $quiz_code; ?>" />
                         <div class="form-group">
                             <label class="col-md-3 control-label" for="quiz-code">Quiz Code<span class="text-danger">*</span></label>
                             <div class="col-md-7">

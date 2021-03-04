@@ -2,6 +2,7 @@
     require '../../inc/connect_db.php';
     
     $quiz_id    = $_POST['quiz-id'];
+    $old_quiz_code  = $_POST['old-quiz-code'];
     $quiz_code  = $_POST['quiz-code'];
     $quiz_type  = $_POST['quiz-type'];
     
@@ -20,7 +21,7 @@
 
     if ($quiz_id == 0) {
         //in case save new quiz
-        if (existQuiz($quiz_id, $quiz_code)) {
+        if (existQuiz($quiz_id, $quiz_code, $quiz_type)) {
             echo json_encode(
                 array(
                     "status"    => false,
@@ -40,7 +41,17 @@
         }
     } else {
         //in case update quiz
-        if (existQuiz($quiz_id, $quiz_code)) {
+        if ($old_quiz_code == $quiz_code) {
+            updateQuiz($data);
+            echo json_encode(
+                array(
+                    "status"    => true,
+                    "msg"       => "Quiz was updated successfully!"
+                )
+            );
+            exit;
+        }
+        if (existQuiz($quiz_id, $quiz_code, $quiz_type)) {
             echo json_encode(
                 array(
                     "status"    => false,

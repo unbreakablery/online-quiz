@@ -101,14 +101,15 @@
 		$result = mysqli_query($connect, $query);
 		return mysqli_fetch_array($result);
 	}
-	function existQuiz($quiz_id, $quiz_code) {
+	function existQuiz($quiz_id, $quiz_code, $quiz_type) {
 		global $connect;
 		$query = "
 					SELECT
 						*
 					FROM `quizzes` AS qq
 					WHERE
-						quiz_code = '$quiz_code' AND
+						quiz_code = '$quiz_code' AND 
+						quiz_type = '$quiz_type' AND 
 						id != $quiz_id
 				";
 		$result = mysqli_query($connect, $query);
