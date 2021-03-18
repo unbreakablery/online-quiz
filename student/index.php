@@ -16,7 +16,8 @@
     }
 
     //default set user id
-    $_SESSION['user_id'] = "christopher";
+    //$_SESSION['user_id'] = "your_id";
+    $_SESSION['user_id'] = session_id();
         
     //Get quizzes data from db.
     $quizzes = getQuizzes();
