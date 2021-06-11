@@ -58,7 +58,7 @@
                 }
 
                 $query = "INSERT INTO `questions` ";
-                $query .= "(`quiz_id`, `que_id`, `que_type`, `que_text`, `ans_1`, `ans_2`, `ans_3`, `ans_4`, `ans_5`, `ans_6`, `ans_7`, `ans_8`, `cor_ans`, `cor_fb`, `inc_fb`)";
+                $query .= "(`quiz_id`, `que_id`, `que_type`, `que_text`, `ans_1`, `ans_2`, `ans_3`, `ans_4`, `ans_5`, `ans_6`, `ans_7`, `ans_8`, `cor_ans`, `cor_fb`, `inc_fb`, `points`)";
                 $query .= " VALUES ";
                 $query .= "(";
                 $query .= $quiz_id . ", ";
@@ -75,7 +75,8 @@
                 $query .= "'" . mysqli_real_escape_string($connect, $r[11]) . "', ";
                 $query .= "'" . mysqli_real_escape_string($connect, trim($r[14])) . "', ";
                 $query .= "'" . mysqli_real_escape_string($connect, $r[12]) . "', ";
-                $query .= "'" . mysqli_real_escape_string($connect, $r[13]) . "'";
+                $query .= "'" . mysqli_real_escape_string($connect, $r[13]) . "', ";
+                $query .= (empty($r[17])) ? 'NULL' : $r[17];
                 $query .= ")";
                 $result = mysqli_query($connect, $query);
             }

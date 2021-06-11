@@ -2,8 +2,10 @@
 	$env = "dev";
 
 	if ($env == "dev") {
-		$connect = mysqli_connect("localhost","root","") or die("Database connection failed.");
+		// $connect = mysqli_connect("localhost","dbo864933279","A!!7BAdvdBZx6n_") or die("Database connection failed.");
+		// mysqli_select_db($connect, "db864933279");
 		// $connect = mysqli_connect("localhost","jasondashboard","n93uxa*{t+9-") or die("Database connection failed.");
+		$connect = mysqli_connect("localhost","root","") or die("Database connection failed.");
 		mysqli_select_db($connect, "emedica-quiz");
 	} else if ($env == "staging") {
 		$connect = mysqli_connect("localhost","","") or die("Database connection failed.");
@@ -309,7 +311,8 @@
 						q2.quiz_code,
 						q1.que_type,
 						q1.que_text,
-						UPPER(cor_ans) AS cor_ans
+						UPPER(cor_ans) AS cor_ans,
+						q1.points
 					FROM
 						questions AS q1
 					LEFT JOIN quizzes AS q2 ON q1.quiz_id = q2.id

@@ -12,11 +12,15 @@
         unset($_SESSION['quiz_id']);
         unset($_SESSION['quiz_code']);
         unset($_SESSION['exam_id']);
-        unset($_SESSION['tscore']);
+        unset($_SESSION['quiz_type']);
     }
 
     //default set user id
-    $_SESSION['user_id'] = "christopher";
+    //$_SESSION['user_id'] = "christopher";
+	//var_dump($_SESSION);
+	//echo session_id();
+    $_SESSION['user_id'] = session_id();
+    //exit;
         
     //Get quizzes data from db.
     $quizzes = getQuizzes();

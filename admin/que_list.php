@@ -51,6 +51,7 @@
                         <th class="hidden-xs">Quiz Code</th>
                         <th class="hidden-xs">Type</th>
                         <th class="hidden-xs">Correct Answers</th>
+                        <th class="hidden-xs">Points</th>
                         <th class="text-center" style="width: 10%;">Actions</th>
                     </tr>
                 </thead>
@@ -66,14 +67,25 @@
                                     <i class="fa fa-list-ol"></i>
                                     <?php echo $questions[$i]['que_type']; ?>
                                 </span>
-                            <?php } else { ?>
+                            <?php } elseif ($questions[$i]['que_type'] == "MR") { ?>
                                 <span class="label label-success">
                                     <i class="fa fa-check-square-o"></i>
+                                    <?php echo $questions[$i]['que_type']; ?>
+                                </span>
+                            <?php } elseif ($questions[$i]['que_type'] == "MC") { ?>
+                                <span class="label label-info">
+                                    <i class="fa fa-check-circle-o"></i>
+                                    <?php echo $questions[$i]['que_type']; ?>
+                                </span>
+                            <?php } else { ?>
+                                <span class="label label-info">
+                                    <i class="fa fa-window-close"></i>
                                     <?php echo $questions[$i]['que_type']; ?>
                                 </span>
                             <?php } ?>
                         </td>
                         <td class="hidden-xs"><?php echo nl2br($questions[$i]['cor_ans']); ?></td>
+                        <td class="hidden-xs text-right"><?php echo $questions[$i]['points']; ?></td>
                         <td class="text-center">
                             <div class="btn-group">
                                 <button class="btn btn-xs btn-default edit-question" type="button" data-toggle="tooltip" title="Edit Question" data-id="<?php echo $questions[$i]['id']; ?>"><i class="fa fa-pencil"></i></button>
@@ -284,7 +296,7 @@
         bsDataTables();
         
         let oTable = $('.js-dataTable-simple').dataTable({
-            columnDefs: [ { orderable: false, targets: [ 5 ] } ],
+            columnDefs: [ { orderable: false, targets: [ 6 ] } ],
             pageLength: 10,
             lengthMenu: [[5, 10, 15, 20], [5, 10, 15, 20]],
             // searching: false,

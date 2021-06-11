@@ -22,6 +22,7 @@
     $cor_ans    = $_POST['cor-ans'];
     $cor_fb     = $_POST['cor-fb'];
     $inc_fb     = $_POST['inc-fb'];
+    $points     = $_POST['points'];
     
     $data = array(
         'id'        => $id,
@@ -39,9 +40,10 @@
         'ans_8'     => mysqli_real_escape_string($connect, $ans_8),
         'cor_ans'   => mysqli_real_escape_string($connect, $cor_ans),
         'cor_fb'    => mysqli_real_escape_string($connect, $cor_fb),
-        'inc_fb'    => mysqli_real_escape_string($connect, $inc_fb)
+        'inc_fb'    => mysqli_real_escape_string($connect, $inc_fb),
+        'points'    => empty($points) ? 'NULL' : $points
     );
-        $inc_fb = $data['inc_fb'];
+    $inc_fb = $data['inc_fb'];
     if ($id == 0) {
         //in case save new question
         // saveQuestion($data);
@@ -49,7 +51,7 @@
                     INSERT INTO questions 
                         (quiz_id, que_id, que_type, que_text, 
                         ans_1, ans_2, ans_3, ans_4, ans_5, ans_6, ans_7, ans_8,
-                        cor_ans, cor_fb, inc_fb) VALUES 
+                        cor_ans, cor_fb, inc_fb, points) VALUES 
                         (";
         $query .= $data['quiz_id'] . ", ";
         $query .= $data['que_id'] . ", ";
@@ -65,7 +67,8 @@
         $query .= "'" . $data['ans_8'] . "',";
         $query .= "'" . $data['cor_ans'] . "',";
         $query .= "'" . $data['cor_fb'] . "',";
-        $query .= "'" . $data['inc_fb'] . "')";
+        $query .= "'" . $data['inc_fb'] . "',";
+        $query .= $data['points'] . ")";
 
         $result = mysqli_query($connect, $query);
     } else {
@@ -87,7 +90,8 @@
         $query .= "ans_8 = '" . $data['ans_8'] . "',";
         $query .= "cor_ans = '" . $data['cor_ans'] . "',";
         $query .= "cor_fb = '" . $data['cor_fb'] . "',";
-        $query .= "inc_fb = '" . $data['inc_fb'] . "' ";
+        $query .= "inc_fb = '" . $data['inc_fb'] . "', ";
+        $query .= "points = " . $data['points'] . " ";
         $query .= "WHERE id = " . $data['id'];
 
         $result = mysqli_query($connect, $query);

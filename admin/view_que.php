@@ -37,6 +37,7 @@
         $cor_ans    = "";
         $cor_fb     = "";
         $inc_fb     = "";
+        $points     = 0;
        
         $quizzes    = getQuizzes();
     } else if ($action == "update" && isset($_GET['id'])) {
@@ -58,6 +59,7 @@
         $cor_ans    = $cur_que['cor_ans'];
         $cor_fb     = $cur_que['cor_fb'];
         $inc_fb     = $cur_que['inc_fb'];
+        $points     = $cur_que['points'];
 
         $quizzes    = getQuizzes();
     } else {
@@ -111,6 +113,7 @@
                                 <select class="form-control" name="que-type" id="que-type" require>
                                     <option value="SEQ" <?php if ($que_type == "SEQ") { ?>selected<?php } ?>>SEQ (Ranked Questions)</option>
                                     <option value="MR" <?php if ($que_type == "MR") { ?>selected<?php } ?>>MR (Multiple Chices)</option>
+                                    <option value="MC" <?php if ($que_type == "MC") { ?>selected<?php } ?>>MC (Ratings)</option>
                                 </select>
                             </div>
                         </div>
@@ -144,6 +147,12 @@
                             <label class="col-md-3 control-label" for="inc-fb">Incorrect Feedback<span class="text-danger">*</span></label>
                             <div class="col-md-7">
                                 <textarea class="form-control" id="inc-fb" name="inc-fb" rows="6" placeholder="Content.." spellcheck="false"><?php echo trim($inc_fb); ?></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="points">Points</label>
+                            <div class="col-md-7">
+                                <input class="form-control" type="number" id="points" name="points" value="<?php echo $points; ?>" placeholder="Enter Points for marked .." min="0" />
                             </div>
                         </div>
                         <div class="form-group">
