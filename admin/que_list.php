@@ -47,7 +47,7 @@
                 <thead>
                     <tr>
                         <th class="text-center"></th>
-                        <th style="width: 50%;">Question</th>
+                        <th style="width: 45%;">Question</th>
                         <th class="hidden-xs">Quiz Code</th>
                         <th class="hidden-xs">Type</th>
                         <th class="hidden-xs">Correct Answers</th>
