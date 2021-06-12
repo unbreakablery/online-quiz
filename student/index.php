@@ -47,6 +47,16 @@
             </div>
             
             <?php foreach($quizzes as $quiz) { ?>
+                <?php if (strpos(strtolower($quiz['quiz_code']), "rating") !== false) { ?>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <a class="block block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
+                            <img class="img-responsive" src="<?php echo $one->assets_folder; ?>/img/photos/ratings-sjt.jpg" alt="">
+                            <div class="block-content text-center">
+                                <h4 class="push-10"><?php echo $quiz['quiz_code']; ?></h4>
+                            </div>
+                        </a>
+                    </div>
+                <?php } ?>
                 <?php if (strpos(strtolower($quiz['quiz_code']), "rank") !== false) { ?>
                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                         <a class="block block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
@@ -142,37 +152,7 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-lg-6 col-md-6">
-                <?php foreach($quizzes as $quiz) { ?>
-                    <?php if (strpos(strtolower($quiz['quiz_code']), " mock") !== false && $quiz['quiz_type'] == "timed") { ?>
-                        <a class="block block-rounded block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
-                            <div class="block-content block-content-full clearfix">
-                                <div class="text-right pull-right push-10-t">
-                                    <h4 class="push-10"><?php echo ucfirst($quiz['quiz_type']); ?> <?php echo $quiz['quiz_code']; ?></h4>
-                                </div>
-                                <div class="pull-left">
-                                    <i class="fa fa-3x fa-clock-o"></i>
-                                </div>
-                            </div>
-                        </a>
-                    <?php } ?>
-                <?php } ?>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <?php foreach($quizzes as $quiz) { ?>
-                    <?php if (strpos(strtolower($quiz['quiz_code']), " mock") !== false && $quiz['quiz_type'] == "untimed") { ?>
-                        <a class="block block-rounded block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
-                            <div class="block-content block-content-full clearfix">
-                                <div class="text-right pull-right push-10-t">
-                                    <h4 class="push-10"><?php echo ucfirst($quiz['quiz_type']); ?> <?php echo $quiz['quiz_code']; ?></h4>
-                                </div>
-                            </div>
-                        </a>
-                    <?php } ?>
-                <?php } ?>
-            </div> -->
         </div>
-        
     </div>
     <form id="quiz-form" name="quiz-form" action="welcome.php" method="post">
         <input type="hidden" name="quiz-id" id="quiz-id" value="" />

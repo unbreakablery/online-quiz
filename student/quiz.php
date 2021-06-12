@@ -167,7 +167,7 @@
                                                         <?php echo substr(nl2br($q['que_text']), 0, 100) . "..."; ?>
                                                     </div>
                                                     <div class="col-md-1 hidden-xs text-right">
-                                                        <?php echo strlen($q['cor_ans']) * 4; ?>
+                                                        <?php echo strlen($q['cor_ans']) * (empty($q['points']) ? 4 : $q['points']); ?>
                                                     </div>
                                                 </div>
                                             </a>
@@ -255,7 +255,7 @@
                         </tbody>
                     </table>
                 </div>
-                <?php } else { ?>
+                <?php } elseif ($cur_que['que_type'] == 'MR') { ?>
                 <div class="table-responsive push-10-t">
                     <table class="table table-striped table-vcenter">
                         <?php for($i = 1; $i <= 8; $i++) { ?>
@@ -269,6 +269,25 @@
                                 </div>
                             </td>
                         </tr>
+                        <?php } ?>
+                    </table>
+                </div>
+                <?php } elseif ($cur_que['que_type'] == 'MC') { ?>
+                <div class="table-responsive push-10-t">
+                    <table class="table table-striped table-vcenter">
+                        <?php for($i = 1; $i <= 8; $i++) { ?>
+                        <?php if (isset($cur_que['ans_' . $i]) && trim($cur_que['ans_' . $i]) != "") { ?>
+                        <tr>
+                            <td>
+                                <div class="radio answer">
+                                    <label for="answer<?php echo $i; ?>">
+                                        <input type="radio" id="answer<?php echo $i; ?>" name="answers" value="<?php echo $i; ?>">
+                                        <?php echo ltrim($cur_que['ans_' . $i], '*'); ?>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php } ?>
                         <?php } ?>
                     </table>
                 </div>
@@ -410,7 +429,7 @@
                 } else {
                     return true;
                 }
-            } else {
+            } else if (que_type == 'MR') {
                 let cnt_checked = $(".checkbox.answer input[type=checkbox]:checked").length;
                 if (cnt_checked < 3) {
                     alert("Please pick up 3 answers!");
@@ -419,6 +438,8 @@
                     return true;
                 }
             }
+
+            return true;
         }
 
         $("button.next-question").click(function() {
@@ -438,7 +459,7 @@
                 if (que_type == 'SEQ') {
                     let guess = $(this).find("div.card").data("ans");
                     ans_list += (guess == undefined ? '' : guess);
-                } else {
+                } else if (que_type == 'MR') {
                     if ($(this).find("input[type=checkbox]").prop("checked")) {
                         let guess = $(this).find("input[type=checkbox]").val();
                         ans_list += (guess == undefined ? '' : guess);
@@ -446,10 +467,15 @@
                 }
             });
 
+            if (que_type == 'MC') {
+                ans_list = $("input[name=answers]:checked").val();
+                ans_list = (ans_list == undefined) ? 0 : ans_list;
+            }
+
             if (!checkValid(que_type)) {
                 return;
             }
-
+            
             $.ajax({
                 url: "/apis/student/check_answer.php",
                 dataType: "json",

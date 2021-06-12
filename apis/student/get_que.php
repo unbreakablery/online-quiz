@@ -120,7 +120,7 @@
                 </tbody>
             </table>
         </div>
-        <?php } else { ?>
+        <?php } elseif ($cur_que['que_type'] == 'MR') { ?>
         <div class="table-responsive push-10-t mr-view">
             <table class="table table-striped table-vcenter">
                 <?php for($i = 1; $i <= 8; $i++) { ?>
@@ -134,6 +134,25 @@
                         </div>
                     </td>
                 </tr>
+                <?php } ?>
+            </table>
+        </div>
+        <?php } elseif ($cur_que['que_type'] == 'MC') { ?>
+        <div class="table-responsive push-10-t mr-view">
+            <table class="table table-striped table-vcenter">
+                <?php for($i = 1; $i <= 8; $i++) { ?>
+                <?php if (isset($cur_que['ans_' . $i]) && trim($cur_que['ans_' . $i]) != "") { ?>
+                <tr>
+                    <td>
+                        <div class="radio answer">
+                            <label for="answer<?php echo $i; ?>">
+                                <input type="radio" id="answer<?php echo $i; ?>" name="answers" value="<?php echo $i; ?>"> 
+                                <?php echo ltrim($cur_que['ans_' . $i], '*'); ?>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <?php } ?>
                 <?php } ?>
             </table>
         </div>
@@ -193,7 +212,7 @@
                 </tbody>
             </table>
         </div>
-        <?php } else { ?>
+        <?php } elseif ($cur_que['que_type'] == 'MR') { ?>
         <div class="table-responsive push-10-t mr-view">
             <table class="table table-striped table-vcenter">
                 <?php for($i = 1; $i <= 8; $i++) { ?>
@@ -214,6 +233,32 @@
                         </div>
                     </td>
                 </tr>
+                <?php } ?>
+            </table>
+        </div>
+        <?php } elseif ($cur_que['que_type'] == 'MC') { ?>
+        <div class="table-responsive push-10-t mr-view">
+            <table class="table table-striped table-vcenter">
+                <?php for($i = 1; $i <= 8; $i++) { ?>
+                <?php if (isset($cur_que['ans_' . $i]) && trim($cur_que['ans_' . $i]) != "") { ?>
+                <?php
+                        if (strpos($exam_detail['answers'], "$i") !== FALSE) {
+                            $checked = 'checked';
+                        } else {
+                            $checked = '';
+                        }
+                ?>
+                <tr>
+                    <td>
+                        <div class="radio answer">
+                            <label for="answer<?php echo $i; ?>">
+                                <input type="radio" id="answer<?php echo $i; ?>" name="answers" value="<?php echo $i; ?>" <?php echo $checked; ?>> 
+                                <?php echo ltrim($cur_que['ans_' . $i], '*'); ?>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <?php } ?>
                 <?php } ?>
             </table>
         </div>

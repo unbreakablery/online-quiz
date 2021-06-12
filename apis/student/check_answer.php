@@ -16,7 +16,8 @@
                 SELECT
                     `que_type`,
                     UPPER(`cor_ans`) AS `cor_ans`,
-                    `cor_fb`
+                    `cor_fb`,
+                    `points`
                 FROM
                     `questions`
                 WHERE
@@ -28,31 +29,34 @@
         $row = mysqli_fetch_array($result);
         $cor_ans = $row['cor_ans'];
         $que_type = $row['que_type'];
+        $points = empty($row['points']) ? 4 : $row['points'];
         
-        $sub_total_score = 4 * strlen($cor_ans);
+        $sub_total_score = $points * strlen($cor_ans);
         $score = 0;
 
         if ($que_type === 'SEQ') {
             for ($i = 0; $i < strlen($cor_ans); $i++) {
                 for ($j = 0; $j < strlen($ans_list); $j++) {
                     if ((ord($cor_ans[$i]) - 65 + 1) == $ans_list[$j]) {
-                        $score += 4 - abs($i - $j);
+                        $score += $points - abs($i - $j);
                     }
                 }	
             }
-        } else {
+        } elseif ($que_type === 'MR') {
             if (strlen($ans_list) > strlen($cor_ans)) {
                 $score = 0;
             } else {
                 for ($i = 0; $i < strlen($cor_ans); $i++) {
                     for ($j = 0; $j < strlen($ans_list); $j++) {
                         if ((ord($cor_ans[$i]) - 65 + 1) == $ans_list[$j]) {
-                            $score += 4;
+                            $score += $points;
                         }
                     }	
                 }    
             }
-        }
+        } elseif ($que_type === 'MC') {
+            $score = ($ans_list == 0) ? 0 : $points - abs(ord($cor_ans) - 65 + 1 - $ans_list);
+        } 
 
         //save exam_detail
         $data = array(

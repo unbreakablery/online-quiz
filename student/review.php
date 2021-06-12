@@ -31,7 +31,8 @@
     $cur_que        = getQuestion($cur_que_id);
     $exam_detail    = getExamDetail($exam_id, $cur_que_id);
     $answers        = isset($exam_detail['answers']) ? $exam_detail['answers'] : '';
-    $score          = getScore($cur_que['que_type'], $cur_que['cor_ans'], $answers);
+    $points         = empty($cur_que['points']) ? 4 : $cur_que['points'];
+    $score          = getScore($cur_que['que_type'], $cur_que['cor_ans'], $answers, $points);
 
     $questions = getExamQuestions($exam_id);
 ?>
@@ -178,7 +179,7 @@
                         </tbody>
                     </table>
                 </div>
-                <?php } else { ?>
+                <?php } elseif ($cur_que['que_type'] == 'MR') { ?>
                 <div class="table-responsive push-10-t mr-view">
                     <table class="table table-striped table-vcenter">
                         <?php for($i = 1; $i <= 8; $i++) { ?>
@@ -206,6 +207,39 @@
                                 </div>
                             </td>
                         </tr>
+                        <?php } ?>
+                    </table>
+                </div>
+                <?php } elseif ($cur_que['que_type'] == 'MC') { ?>
+                <div class="table-responsive push-10-t mr-view">
+                    <table class="table table-striped table-vcenter">
+                        <?php for($i = 1; $i <= 8; $i++) { ?>
+                        <?php
+                                if (strpos($answers, "$i") !== FALSE) {
+                                    $checked = 'checked';
+                                } else {
+                                    $checked = '';
+                                }
+
+                                $cor_ans = $cur_que['cor_ans'];
+                                if (strpos($cor_ans, chr(65 + $i - 1)) !== FALSE) {
+                                    $chk_class = "text-success";
+                                } else {
+                                    $chk_class = "text-danger";
+                                }
+                        ?>
+                        <?php if (isset($cur_que['ans_' . $i]) && trim($cur_que['ans_' . $i]) != "") { ?>
+                        <tr>
+                            <td>
+                                <div class="radio answer <?php echo $chk_class; ?>">
+                                    <label for="answer<?php echo $i; ?>">
+                                        <input type="radio" id="answer<?php echo $i; ?>" name="answers" value="<?php echo $i; ?>" <?php echo $checked; ?> disabled> 
+                                        <?php echo $cur_que['ans_' . $i]; ?>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php } ?>
                         <?php } ?>
                     </table>
                 </div>

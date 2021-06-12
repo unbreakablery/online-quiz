@@ -20,26 +20,28 @@
         $secs = $seconds % 60;
         return ($mins < 10 ? "0" . $mins : $mins) . ":" . ($secs < 10 ? "0" . $secs : $secs);
 	}
-	function getScore($que_type, $cor_ans, $answers) {
-		$total_score = strlen($cor_ans) * 4;
+	function getScore($que_type, $cor_ans, $answers, $points = 4) {
+		$total_score = strlen($cor_ans) * $points;
 
 		$score = 0;
 		if ($que_type == "SEQ") {
 			for ($i = 0; $i < strlen($cor_ans); $i++) {
                 for ($j = 0; $j < strlen($answers); $j++) {
                     if ((ord($cor_ans[$i]) - 65 + 1) == $answers[$j]) {
-                        $score += 4 - abs($i - $j);
+                        $score += $points - abs($i - $j);
                     }
                 }	
             }
-		} else {
+		} else if ($que_type == "MR") {
 			for ($i = 0; $i < strlen($cor_ans); $i++) {
 				for ($j = 0; $j < strlen($answers); $j++) {
 					if ((ord($cor_ans[$i]) - 65 + 1) == $answers[$j]) {
-						$score += 4;
+						$score += $points;
 					}
 				}	
 			}
+		} else if ($que_type == "MC") {
+			$score = ($answers == 0) ? 0 : ($points - abs(ord($cor_ans) - 65 + 1 - $answers));
 		}
 
 		return array(

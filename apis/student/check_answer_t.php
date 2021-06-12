@@ -51,28 +51,35 @@
     $score = 0;
     $total_score = 0;
     foreach ($qs1 as $q1) {
-        $total_score += strlen($q1['cor_ans']) * 4;
+        $points = empty($q1['points']) ? 4 : $q1['points'];
+        $total_score += strlen($q1['cor_ans']) * $points;
         foreach ($qs2 as $q2) {
             if ($q1['id'] == $q2['que_id']) {
                 if ($q1['que_type'] == "SEQ") {
                     for ($i = 0; $i < strlen($q1['cor_ans']); $i++) {
                         for ($j = 0; $j < strlen($q2['answers']); $j++) {
                             if ((ord($q1['cor_ans'][$i]) - 65 + 1) == $q2['answers'][$j]) {
-                                $score += 4 - abs($i - $j);
+                                $score += $points - abs($i - $j);
                             }
                         }	
                     }
-                } else {
+                } elseif ($q1['que_type'] == "MR") {
                     if (strlen($q2['answers']) > strlen($q1['cor_ans'])) {
                         $score = 0;
                     } else {
                         for ($i = 0; $i < strlen($q1['cor_ans']); $i++) {
                             for ($j = 0; $j < strlen($q2['answers']); $j++) {
                                 if ((ord($q1['cor_ans'][$i]) - 65 + 1) == $q2['answers'][$j]) {
-                                    $score += 4;
+                                    $score += $points;
                                 }
                             }	
                         }    
+                    }
+                } elseif ($q1['que_type'] == "MC") {
+                    if (strlen($q2['answers']) > strlen($q1['cor_ans'])) {
+                        $score = 0;
+                    } else {
+                        $score += ($q2['answers'] == 0) ? 0 : $points - abs(ord($q1['cor_ans']) - 65 + 1 - $q2['answers']);
                     }
                 }
             }
