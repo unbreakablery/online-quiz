@@ -16,11 +16,7 @@
     }
 
     //default set user id
-    //$_SESSION['user_id'] = "christopher";
-	//var_dump($_SESSION);
-	//echo session_id();
     $_SESSION['user_id'] = session_id();
-    //exit;
         
     //Get quizzes data from db.
     $quizzes = getQuizzes();
@@ -45,7 +41,7 @@
                     Once you have worked through these, try the full SJT mock at the bottom of the page.
                 </h5>
             </div>
-            
+            <div class="col-lg-12 col-md-12">
             <?php foreach($quizzes as $quiz) { ?>
                 <?php if (strpos(strtolower($quiz['quiz_code']), "rating") !== false) { ?>
                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -57,16 +53,10 @@
                         </a>
                     </div>
                 <?php } ?>
-                <?php if (strpos(strtolower($quiz['quiz_code']), "rank") !== false) { ?>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                        <a class="block block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
-                            <img class="img-responsive" src="<?php echo $one->assets_folder; ?>/img/photos/ranking-sjt.jpg" alt="">
-                            <div class="block-content text-center">
-                                <h4 class="push-10"><?php echo $quiz['quiz_code']; ?></h4>
-                            </div>
-                        </a>
-                    </div>
-                <?php } ?>
+            <?php } ?>
+            </div>
+            <div class="col-lg-12 col-md-12">
+            <?php foreach($quizzes as $quiz) { ?>
                 <?php if (strpos(strtolower($quiz['quiz_code']), "pick") !== false) { ?>
                     <div class="col-lg-4 col-md-4  col-sm-6 col-xs-12">
                         <a class="block block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
@@ -78,7 +68,22 @@
                     </div>
                 <?php } ?>
             <?php } ?>
-
+            </div>
+            <div class="col-lg-12 col-md-12">
+            <?php foreach($quizzes as $quiz) { ?>
+                <?php if (strpos(strtolower($quiz['quiz_code']), "rank") !== false) { ?>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <a class="block block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
+                            <img class="img-responsive" src="<?php echo $one->assets_folder; ?>/img/photos/ranking-sjt.jpg" alt="">
+                            <div class="block-content text-center">
+                                <h4 class="push-10"><?php echo $quiz['quiz_code']; ?></h4>
+                            </div>
+                        </a>
+                    </div>
+                <?php } ?>
+            <?php } ?>
+            </div>
+            
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 push">
                 <h5 class="text-black">
                     The minimocks below have 16 questions each - 8 from each section - and give you the opportunity to practise questions with exam timings. 
