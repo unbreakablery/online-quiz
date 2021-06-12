@@ -62,7 +62,7 @@ if(!isset($trackPage) || $trackPage != "first") {
 require 'classes/Template.php';
 
 // Create a new Template Object
-$one                               = new Template('Emedica SJT Quiz', 'ESQ', 'V2.0', '../assets'); // Name, short_name, version and assets folder's name
+$one                               = new Template('Emedica SJT Quiz', 'ESQ', 'V3.0', '../assets'); // Name, short_name, version and assets folder's name
 
 // Global Meta Data
 $one->author                       = 'Christopher Horn';
