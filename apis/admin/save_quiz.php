@@ -5,6 +5,7 @@
     $old_quiz_code  = $_POST['old-quiz-code'];
     $quiz_code  = $_POST['quiz-code'];
     $quiz_type  = $_POST['quiz-type'];
+    $quiz_kind  = $_POST['quiz-kind'];
     
     if ($quiz_type == "untimed") {
         $limit_time = 0;
@@ -16,7 +17,8 @@
                     'quiz_id'       => $quiz_id,
                     'quiz_code'     => $quiz_code,
                     'quiz_type'     => $quiz_type,
-                    'limit_time'    => $limit_time
+                    'limit_time'    => $limit_time,
+                    'quiz_kind'     => $quiz_kind
                 );
 
     if ($quiz_id == 0) {

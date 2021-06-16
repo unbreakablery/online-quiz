@@ -8,8 +8,8 @@
 		$connect = mysqli_connect("localhost","root","") or die("Database connection failed.");
 		mysqli_select_db($connect, "emedica-quiz");
 	} else if ($env == "staging") {
-		$connect = mysqli_connect("localhost","","") or die("Database connection failed.");
-		mysqli_select_db($connect, "");
+		$connect = mysqli_connect("localhost","id17066249_root",">e&O79iTMl1Z%kN-") or die("Database connection failed.");
+		mysqli_select_db($connect, "id17066249_emedica");
 	} else {
 		$connect = mysqli_connect("localhost","","") or die("Database connection failed.");
 		mysqli_select_db($connect, "");
@@ -392,7 +392,8 @@
 						`q1`.`quiz_code`,
 						COUNT(`q2`.`quiz_id`) AS `cnt_que`,
 						`q1`.`quiz_type`,
-						`q1`.`limit_time`
+						`q1`.`limit_time`,
+						`q1`.`quiz_kind`
 					FROM 
 						`quizzes` AS `q1`
 					LEFT JOIN `questions` AS `q2` ON `q1`.`id` = `q2`.`quiz_id`
@@ -412,12 +413,13 @@
 		$quiz_code 		= $data['quiz_code'];
 		$quiz_type 		= $data['quiz_type'];
 		$limit_time 	= $data['limit_time'];
+		$quiz_kind 		= $data['quiz_kind'];
 
 		$query = "
 					INSERT INTO `quizzes` 
-						(`quiz_code`, `quiz_type`, `limit_time`) 
+						(`quiz_code`, `quiz_type`, `limit_time`, `quiz_kind`) 
 					VALUES 
-						('$quiz_code', '$quiz_type', $limit_time)
+						('$quiz_code', '$quiz_type', $limit_time, '$quiz_kind')
 
 				";
 		mysqli_query($connect, $query);
@@ -429,12 +431,15 @@
 		$quiz_code 		= $data['quiz_code'];
 		$quiz_type 		= $data['quiz_type'];
 		$limit_time 	= $data['limit_time'];
+		$quiz_kind 		= $data['quiz_kind'];
+
 		$query = "
 					UPDATE `quizzes`
 					SET
 						`quiz_code` = '$quiz_code',
 						`quiz_type` = '$quiz_type',
-						`limit_time` = $limit_time
+						`limit_time` = $limit_time,
+						`quiz_kind` = '$quiz_kind'
 					WHERE
 						`id` = $quiz_id
 				";

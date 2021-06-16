@@ -51,6 +51,7 @@
                         <th class="hidden-xs">Number Of Questions</th>
                         <th class="hidden-xs">Quiz Type</th>
                         <th class="hidden-xs" style="width: 15%;">Limit Time</th>
+                        <th class="hidden-xs">Quiz Kind</th>
                         <th class="text-center" style="width: 10%;">Actions</th>
                     </tr>
                 </thead>
@@ -73,6 +74,7 @@
                             <?php } ?>
                         </td>
                         <td class="hidden-xs"><?php echo getYourTime($quizzes[$i]['limit_time']); ?></td>
+                        <td class="hidden-xs"><?php echo $quizzes[$i]['quiz_kind']; ?></td>
                         <td class="text-center">
                             <div class="btn-group">
                                 <button class="btn btn-xs btn-default edit-quiz" type="button" data-toggle="tooltip" title="Edit Quiz" data-id="<?php echo $quizzes[$i]['id']; ?>"><i class="fa fa-pencil"></i></button>
@@ -283,7 +285,7 @@
         bsDataTables();
         
         let oTable = $('.js-dataTable-simple').dataTable({
-            columnDefs: [ { orderable: false, targets: [ 5 ] } ],
+            columnDefs: [ { orderable: false, targets: [ 6 ] } ],
             pageLength: 10,
             lengthMenu: [[5, 10, 15, 20], [5, 10, 15, 20]],
             // searching: false,

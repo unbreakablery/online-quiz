@@ -25,7 +25,7 @@
         //Read data from uploaded excel file.
         if ( $xlsx = SimpleXLSX::parse($filename) ) {
             // Produce array keys from the array values of 1st array element
-            $table_header = ['#', 'Quiz Code', 'Count of Questions', 'Quiz Type', 'Limit Time'];
+            $table_header = ['#', 'Quiz Code', 'Count of Questions', 'Quiz Type', 'Limit Time', 'Quiz Kind'];
             $table_data = [];
             foreach ( $xlsx->rows() as $k => $r ) {
                 if ( $k === 0 ) {
@@ -35,13 +35,15 @@
                 $quiz_type = strtolower(trim(mysqli_real_escape_string($connect, $r[15])));
                 $limit_time = explode(" ", trim(mysqli_real_escape_string($connect, $r[16])));
                 $limit_time = is_numeric($limit_time[0]) ? $limit_time[0] * 60 : 0;
+                $quiz_kind = strtolower(trim(mysqli_real_escape_string($connect, $r[18])));
 
                 $query = "
                             SELECT *
                             FROM `quizzes`
                             WHERE
                                 `quiz_code` = '$quiz_code' AND
-                                `quiz_type` = '$quiz_type' 
+                                `quiz_type` = '$quiz_type' AND
+                                `quiz_kind` = '$quiz_kind'
                         ";
                 $result = mysqli_query($connect, $query);
                 if (mysqli_num_rows($result) > 0) {
@@ -49,9 +51,9 @@
                     $quiz_id = $row['id'];
                 } else {
                     $query = "INSERT INTO `quizzes`";
-                    $query .= "(`quiz_code`, `quiz_type`, `limit_time`)";
+                    $query .= "(`quiz_code`, `quiz_type`, `limit_time`, `quiz_kind`)";
                     $query .= " VALUES ";
-                    $query .= "('$quiz_code', '$quiz_type', $limit_time)";
+                    $query .= "('$quiz_code', '$quiz_type', $limit_time, '$quiz_kind')";
                     
                     $result = mysqli_query($connect, $query);
                     $quiz_id = mysqli_insert_id($connect);
@@ -86,7 +88,8 @@
                             `q1`.`quiz_code`,
                             COUNT(`q1`.`quiz_code`) AS `cnt_que`,
                             `q1`.`quiz_type`,
-                            `q1`.`limit_time`
+                            `q1`.`limit_time`,
+                            `q1`.`quiz_kind`
                         FROM 
                             `quizzes` AS `q1`
                         LEFT JOIN `questions` AS `q2` ON `q1`.`id` = `q2`.`quiz_id`
@@ -102,6 +105,7 @@
                 $row[2] = $row['cnt_que'];
                 $row[3] = ucfirst($row['quiz_type']);
                 $row[4] = ($row['limit_time'] > 0) ? ($row['limit_time'] / 60) . ' minutes' : '';
+                $row[5] = $row['quiz_kind'];
                 $table_data[] = $row;
             }
         }

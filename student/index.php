@@ -20,6 +20,42 @@
         
     //Get quizzes data from db.
     $quizzes = getQuizzes();
+
+    $ratingsQuizzes = [];
+    $selectionQuizzes = [];
+    $rankingQuizzes = [];
+    $miniMockTimedQuizzes = [];
+    $miniMockUntimedQuizzes = [];
+    $mockTimedQuizzes = [];
+    $mockUntimedQuizzes = [];
+
+    foreach($quizzes as $quiz) {
+        switch($quiz['quiz_kind']) {
+            case 'ratings':
+                $ratingsQuizzes[] = $quiz;
+                break;
+            case 'selection':
+                $selectionQuizzes[] = $quiz;
+                break;
+            case 'ranking':
+                $rankingQuizzes[] = $quiz;
+                break;
+            case 'mini-mock':
+                if ($quiz['quiz_type'] == 'untimed') {
+                    $miniMockUntimedQuizzes[] = $quiz;
+                } elseif ($quiz['quiz_type'] == 'timed') {
+                    $miniMockTimedQuizzes[] = $quiz;
+                }
+                break;
+            case 'mock':
+                if ($quiz['quiz_type'] == 'untimed') {
+                    $mockUntimedQuizzes[] = $quiz;
+                } elseif ($quiz['quiz_type'] == 'timed') {
+                    $mockTimedQuizzes[] = $quiz;
+                }
+                break;
+        }
+    }
 ?>
 <!-- Page Content -->
 <div class="content">
@@ -42,45 +78,39 @@
                 </h5>
             </div>
             <div class="col-lg-12 col-md-12">
-            <?php foreach($quizzes as $quiz) { ?>
-                <?php if (strpos(strtolower($quiz['quiz_code']), "rating") !== false) { ?>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                        <a class="block block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
-                            <img class="img-responsive" src="<?php echo $one->assets_folder; ?>/img/photos/ratings-sjt.jpg" alt="">
-                            <div class="block-content text-center">
-                                <h4 class="push-10"><?php echo $quiz['quiz_code']; ?></h4>
-                            </div>
-                        </a>
-                    </div>
-                <?php } ?>
+            <?php foreach($ratingsQuizzes as $quiz) { ?>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <a class="block block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
+                        <img class="img-responsive" src="<?php echo $one->assets_folder; ?>/img/photos/ratings-sjt.jpg" alt="">
+                        <div class="block-content text-center">
+                            <h4 class="push-10"><?php echo $quiz['quiz_code']; ?></h4>
+                        </div>
+                    </a>
+                </div>
             <?php } ?>
             </div>
             <div class="col-lg-12 col-md-12">
-            <?php foreach($quizzes as $quiz) { ?>
-                <?php if (strpos(strtolower($quiz['quiz_code']), "pick") !== false) { ?>
-                    <div class="col-lg-4 col-md-4  col-sm-6 col-xs-12">
-                        <a class="block block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
-                            <img class="img-responsive" src="<?php echo $one->assets_folder; ?>/img/photos/selection-sjt.jpg" alt="">
-                            <div class="block-content text-center">
-                                <h4 class="push-10"><?php echo $quiz['quiz_code']; ?></h4>
-                            </div>
-                        </a>
-                    </div>
-                <?php } ?>
+            <?php foreach($selectionQuizzes as $quiz) { ?>
+                <div class="col-lg-4 col-md-4  col-sm-6 col-xs-12">
+                    <a class="block block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
+                        <img class="img-responsive" src="<?php echo $one->assets_folder; ?>/img/photos/selection-sjt.jpg" alt="">
+                        <div class="block-content text-center">
+                            <h4 class="push-10"><?php echo $quiz['quiz_code']; ?></h4>
+                        </div>
+                    </a>
+                </div>
             <?php } ?>
             </div>
             <div class="col-lg-12 col-md-12">
-            <?php foreach($quizzes as $quiz) { ?>
-                <?php if (strpos(strtolower($quiz['quiz_code']), "rank") !== false) { ?>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                        <a class="block block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
-                            <img class="img-responsive" src="<?php echo $one->assets_folder; ?>/img/photos/ranking-sjt.jpg" alt="">
-                            <div class="block-content text-center">
-                                <h4 class="push-10"><?php echo $quiz['quiz_code']; ?></h4>
-                            </div>
-                        </a>
-                    </div>
-                <?php } ?>
+            <?php foreach($rankingQuizzes as $quiz) { ?>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <a class="block block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
+                        <img class="img-responsive" src="<?php echo $one->assets_folder; ?>/img/photos/ranking-sjt.jpg" alt="">
+                        <div class="block-content text-center">
+                            <h4 class="push-10"><?php echo $quiz['quiz_code']; ?></h4>
+                        </div>
+                    </a>
+                </div>
             <?php } ?>
             </div>
             
@@ -94,26 +124,22 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="row">
                     <div class="col-md-6 col-sm-12 col-xs-12">
-                        <?php foreach($quizzes as $quiz) { ?>
-                            <?php if (strpos(strtolower($quiz['quiz_code']), "minimock") !== false && $quiz['quiz_type'] == "timed") { ?>
-                                <a class="block block-rounded block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
-                                    <div class="block-content block-content-full clearfix">
-                                        <i class="fa fa-2x fa-clock-o" style="padding-right:5px;"></i>
-                                        <span class="quiz-code"><?php echo ucfirst($quiz['quiz_type']); ?> <?php echo $quiz['quiz_code']; ?></span>
-                                    </div>
-                                </a>
-                            <?php } ?>
+                        <?php foreach($miniMockTimedQuizzes as $quiz) { ?>
+                            <a class="block block-rounded block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
+                                <div class="block-content block-content-full clearfix">
+                                    <i class="fa fa-2x fa-clock-o" style="padding-right:5px;"></i>
+                                    <span class="quiz-code"><?php echo ucfirst($quiz['quiz_type']); ?> <?php echo $quiz['quiz_code']; ?></span>
+                                </div>
+                            </a>
                         <?php } ?>
                     </div>
                     <div class="col-md-6 col-sm-12 col-xs-12">
-                        <?php foreach($quizzes as $quiz) { ?>
-                            <?php if (strpos(strtolower($quiz['quiz_code']), "minimock") !== false && $quiz['quiz_type'] == "untimed") { ?>
-                                <a class="block block-rounded block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
-                                    <div class="block-content block-content-full clearfix">
-                                        <span class="quiz-code"><?php echo ucfirst($quiz['quiz_type']); ?> <?php echo $quiz['quiz_code']; ?></span>
-                                    </div>
-                                </a>
-                            <?php } ?>
+                        <?php foreach($miniMockUntimedQuizzes as $quiz) { ?>
+                            <a class="block block-rounded block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
+                                <div class="block-content block-content-full clearfix">
+                                    <span class="quiz-code"><?php echo ucfirst($quiz['quiz_type']); ?> <?php echo $quiz['quiz_code']; ?></span>
+                                </div>
+                            </a>
                         <?php } ?>
                     </div>
                 </div>
@@ -133,26 +159,22 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="row">
                     <div class="col-md-6 col-sm-12 col-xs-12">
-                        <?php foreach($quizzes as $quiz) { ?>
-                            <?php if (strpos(strtolower($quiz['quiz_code']), " mock") !== false && $quiz['quiz_type'] == "timed") { ?>
-                                <a class="block block-rounded block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
-                                    <div class="block-content block-content-full clearfix">
-                                        <i class="fa fa-2x fa-clock-o" style="padding-right:5px;"></i>
-                                        <span class="quiz-code"><?php echo ucfirst($quiz['quiz_type']); ?> <?php echo $quiz['quiz_code']; ?></span>
-                                    </div>
-                                </a>
-                            <?php } ?>
+                        <?php foreach($mockTimedQuizzes as $quiz) { ?>
+                            <a class="block block-rounded block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
+                                <div class="block-content block-content-full clearfix">
+                                    <i class="fa fa-2x fa-clock-o" style="padding-right:5px;"></i>
+                                    <span class="quiz-code"><?php echo ucfirst($quiz['quiz_type']); ?> <?php echo $quiz['quiz_code']; ?></span>
+                                </div>
+                            </a>
                         <?php } ?>
                     </div>
                     <div class="col-md-6 col-sm-12 col-xs-12">
-                        <?php foreach($quizzes as $quiz) { ?>
-                            <?php if (strpos(strtolower($quiz['quiz_code']), " mock") !== false && $quiz['quiz_type'] == "untimed") { ?>
-                                <a class="block block-rounded block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
-                                    <div class="block-content block-content-full clearfix">
-                                        <span class="quiz-code"><?php echo ucfirst($quiz['quiz_type']); ?> <?php echo $quiz['quiz_code']; ?></span>
-                                    </div>
-                                </a>
-                            <?php } ?>
+                        <?php foreach($mockUntimedQuizzes as $quiz) { ?>
+                            <a class="block block-rounded block-link-hover3 submit-link" href="#" data-id="<?php echo $quiz['id']; ?>">
+                                <div class="block-content block-content-full clearfix">
+                                    <span class="quiz-code"><?php echo ucfirst($quiz['quiz_type']); ?> <?php echo $quiz['quiz_code']; ?></span>
+                                </div>
+                            </a>
                         <?php } ?>
                     </div>
                 </div>

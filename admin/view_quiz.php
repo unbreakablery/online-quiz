@@ -25,6 +25,7 @@
         $quiz_code = "";
         $quiz_type = "";
         $limit_time = 0;
+        $quiz_kind = "ratings";
     } else if ($action == "update" && isset($_GET['id'])) {
         //in case update quiz
         $quiz_id = $_GET['id'];
@@ -32,6 +33,7 @@
         $quiz_code = $quiz['quiz_code'];
         $quiz_type = $quiz['quiz_type'];
         $limit_time = $quiz['limit_time'];
+        $quiz_kind = $quiz['quiz_kind'];
     } else {
         header("Location: index.php");
     }
@@ -92,6 +94,18 @@
                                     <option value="1800" <?php if ($limit_time == 1800) { ?>selected<?php } ?>>30 minutes</option>
                                     <option value="5400" <?php if ($limit_time == 5400) { ?>selected<?php } ?>>90 minutes</option>
                                     <option value="5700" <?php if ($limit_time == 5700) { ?>selected<?php } ?>>95 minutes</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="quiz-kind">Quiz Kind<span class="text-danger">*</span></label>
+                            <div class="col-md-7">
+                                <select class="form-control" name="quiz-kind" id="quiz-kind" require>
+                                    <option value="ratings" <?php if (empty($quiz_kind) || $quiz_kind == 'ratings') { ?>selected<?php } ?>>Ratings</option>
+                                    <option value="selection" <?php if ($quiz_kind == 'selection') { ?>selected<?php } ?>>Selection</option>
+                                    <option value="ranking" <?php if ($quiz_kind == 'ranking') { ?>selected<?php } ?>>Ranking</option>
+                                    <option value="mini-mock" <?php if ($quiz_kind == 'mini-mock') { ?>selected<?php } ?>>Mini Mock</option>
+                                    <option value="mock" <?php if ($quiz_kind == 'mock') { ?>selected<?php } ?>>Mock</option>
                                 </select>
                             </div>
                         </div>

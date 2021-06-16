@@ -86,6 +86,7 @@
                             <th class="text-center">Count Of Questions</th>
                             <th class="text-center">Quiz Type</th>
                             <th class="text-center">Limit Time</th>
+                            <th class="text-center">Quiz Kind</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,6 +97,7 @@
                                 <td class="text-center"><?php echo $quiz['cnt_que']; ?></td>
                                 <td class="text-center"><?php echo ucfirst($quiz['quiz_type']); ?></td>
                                 <td class="text-center"><?php echo ($quiz['limit_time'] > 0) ? ($quiz['limit_time'] / 60) . ' minutes' : ''; ?></td>
+                                <td class="text-center"><?php echo $quiz['quiz_kind']; ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
@@ -179,11 +181,12 @@
                 responsive: true,
                 ordering:  false,
                 columnDefs: [
-                    { targets: [0], "width": "15%"},
-                    { targets: [1], "width": "25%"},
+                    { targets: [0], "width": "10%"},
+                    { targets: [1], "width": "20%"},
                     { targets: [2], "width": "20%"},
-                    { targets: [3], "width": "20%"},
+                    { targets: [3], "width": "15%"},
                     { targets: [4], "width": "20%"},
+                    { targets: [5], "width": "15%"},
                     { targets: '_all', className: 'text-center' }
                     ]
             });
@@ -278,11 +281,12 @@
                             data: data.table_data,
                             ordering:  false,
                             columnDefs: [
-                                { targets: [0], "width": "15%"},
+                                { targets: [0], "width": "10%"},
                                 { targets: [1], "width": "20%"},
-                                { targets: [2], "width": "25%"},
                                 { targets: [2], "width": "20%"},
-                                { targets: [2], "width": "20%"},
+                                { targets: [3], "width": "15%"},
+                                { targets: [4], "width": "20%"},
+                                { targets: [5], "width": "15%"},
                                 { targets: '_all', className: 'text-center' }
                                 ]
                         } );
