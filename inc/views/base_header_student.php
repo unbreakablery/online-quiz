@@ -35,7 +35,7 @@
                         style="background-color: #46c37b">
                         <strong>Log out <i class="si si-logout push-5-l"></i></strong>
                     </a>
-                </li>  
+                </li>
             </ul>
         </div>
     </div>
